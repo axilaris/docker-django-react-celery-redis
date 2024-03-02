@@ -111,8 +111,6 @@ DATABASES = {
     },
 }
 
-DATABASE_ROUTERS = ['qwimanalytics.routers.QWimAnalyticsRouter',]
-
 ## User model
 AUTH_USER_MODEL = 'user_api.AppUser'
 
