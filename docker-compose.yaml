@@ -17,14 +17,14 @@ services:
       context: ./backend
     ports:
       - "8000:8000"
-    container_name: hswim_app_backend
+    container_name: backend_container
     
   frontend:
     build:
       context: ./frontend
     volumes:
       - frontend:/app/build
-    container_name: hswim_app_frontend
+    container_name: frontend_container
   nginx:
     build:
       context: ./nginx
