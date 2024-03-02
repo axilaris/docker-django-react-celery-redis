@@ -1,0 +1,56 @@
+version: '3.7'
+
+services:
+
+  # Redis
+  redis:
+    image: redis:alpine
+    container_name: redis
+
+  backend:
+    volumes:
+      - .:/django
+      - static:/static
+    env_file:
+      - .env
+    build:
+      context: ./backend
+    ports:
+      - "8000:8000"
+    container_name: hswim_app_backend
+    
+  frontend:
+    build:
+      context: ./frontend
+    volumes:
+      - frontend:/app/build
+    container_name: hswim_app_frontend
+  nginx:
+    build:
+      context: ./nginx
+    volumes:
+      - static:/static
+      - frontend:/var/www/frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - redis
+      - backend
+      - frontend
+
+# celery
+  celery:
+    restart: always
+    build:
+      context: ./backend
+    command: celery -A backend worker -l DEBUG
+    volumes:
+      - .:/django
+    container_name: celery  
+    depends_on:
+      - redis
+      - backend
+
+volumes:
+  static:
+  frontend:
