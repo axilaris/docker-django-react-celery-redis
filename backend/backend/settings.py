@@ -33,15 +33,6 @@ if DEBUG:
         level=logging.DEBUG,
         format='%(asctime)s %(levelname)s %(message)s',
     )
-# else:
-#     # will output to logging file
-#     logging.basicConfig(
-#         level=logging.DEBUG,
-#         format='%(asctime)s %(levelname)s %(message)s',
-#         filename='/Users/firdaus/Documents/project/mimosjpj/logs/production.log',
-#         filemode='a'
-#     )
-
 
 
 ALLOWED_HOSTS = ['*']
