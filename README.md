@@ -15,3 +15,9 @@ pip install django-cors-headers
 npm install axios
 npm install react-bootstrap bootstrap
 ```
+
+* docker
+```
+docker-compose build
+docker-compose up
+```
