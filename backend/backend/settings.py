@@ -168,3 +168,13 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = "redis://redis:6379"
 CELERY_RESULT_BACKEND = "redis://redis:6379"
+
+SESSION_COOKIE_HTTPONLY = True  # Default value is True, which is recommended
+SESSION_COOKIE_SAMESITE = 'Lax' # Consider 'None' if strictly necessary and secure is set
+SESSION_COOKIE_SECURE = False    # Non-Production Port 80
+# SESSION_COOKIE_SECURE = True    # Set to True if you are using HTTPS
+
+CSRF_COOKIE_HTTPONLY = False    # Should generally be False to allow JavaScript to read the value
+CSRF_COOKIE_SECURE = False       # Non-Production Port 80
+#CSRF_COOKIE_SECURE = True       # Set to True if you are using HTTPS
+

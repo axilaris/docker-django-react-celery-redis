@@ -6,6 +6,8 @@ import Container from 'react-bootstrap/Container';
 import Navbar from 'react-bootstrap/Navbar';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import Cookies from 'js-cookie';
+
 
 
 axios.defaults.xsrfCookieName = 'csrftoken';
@@ -25,6 +27,13 @@ function App() {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
+
+    // Retrieve the CSRF token from the cookie
+    const csrfToken = Cookies.get('csrftoken');
+    console.log("XXX /api/user csrfToken:" + csrfToken);    
+    // Set the CSRF token in the Axios default headers
+    axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+
     client.get("/api/user")
     .then(function(res) {
       setCurrentUser(true);
@@ -54,6 +63,13 @@ function App() {
         password: password
       }
     ).then(function(res) {
+
+      // Retrieve the CSRF token from the cookie
+      const csrfToken = Cookies.get('csrftoken');
+      console.log("XXX /api/register csrfToken:" + csrfToken);    
+      // Set the CSRF token in the Axios default headers
+      axios.defaults.headers.common['X-CSRFToken'] = csrfToken;      
+
       client.post(
         "/api/login",
         {
@@ -61,6 +77,13 @@ function App() {
           password: password
         }
       ).then(function(res) {
+
+        // Retrieve the CSRF token from the cookie
+        const csrfToken = Cookies.get('csrftoken');
+        console.log("XXX /api/login after register csrfToken:" + csrfToken);    
+        // Set the CSRF token in the Axios default headers
+        axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+
         setCurrentUser(true);
       });
     });
@@ -75,6 +98,13 @@ function App() {
         password: password
       }
     ).then(function(res) {
+
+      // Retrieve the CSRF token from the cookie
+      const csrfToken = Cookies.get('csrftoken');
+      console.log("XXX /api/login csrfToken:" + csrfToken);    
+      // Set the CSRF token in the Axios default headers
+      axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+
       setCurrentUser(true);
     });
   }
