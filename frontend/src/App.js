@@ -8,8 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 
-
-
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
@@ -18,7 +16,20 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:8000"
 });
 
+// client.interceptors.request.use(function (config) {
+//     // Retrieve and set the CSRF token here
+//     config.headers['X-CSRFToken'] = Cookies.get('csrftoken');
+// 
+//     const csrfToken = Cookies.get('csrftoken');
+// 
+//     console.log("XXX axios interceptors:" + csrfToken);    
+//     return config;
+// });
+
+
 function App() {
+
+
 
   const [currentUser, setCurrentUser] = useState();
   const [registrationToggle, setRegistrationToggle] = useState(false);
@@ -28,19 +39,45 @@ function App() {
 
   useEffect(() => {
 
+/*
     // Retrieve the CSRF token from the cookie
     const csrfToken = Cookies.get('csrftoken');
     console.log("XXX /api/user csrfToken:" + csrfToken);    
     // Set the CSRF token in the Axios default headers
     axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+*/
+    // client.get("/api/user")
+    // .then(function(res) {
+    //   setCurrentUser(true);
+    // })
+    // .catch(function(error) {
+    //   setCurrentUser(false);
+    // });
+    // 
 
-    client.get("/api/user")
+
+    const axiosInstance = axios.create({
+       baseURL: "http://127.0.0.1:8000",
+       withCredentials: true
+    })
+
+    const csrfToken = Cookies.get('csrftoken');
+    console.log("XXX /api/user csrfToken:" + csrfToken);    
+    // Set the CSRF token in the Axios default headers
+    axiosInstance.defaults.headers.common['X-CSRFToken'] = csrfToken;
+    axiosInstance.defaults.xsrfCookieName = 'csrftoken';
+    axiosInstance.defaults.xsrfHeaderName = 'X-CSRFToken';
+    axiosInstance.defaults.withCredentials = true;    
+
+    axiosInstance.get("/api/user")
     .then(function(res) {
       setCurrentUser(true);
     })
     .catch(function(error) {
       setCurrentUser(false);
     });
+
+
   }, []);
 
   function update_form_btn() {
@@ -91,7 +128,12 @@ function App() {
 
   function submitLogin(e) {
     e.preventDefault();
-    client.post(
+
+    const axiosInstance = axios.create({
+       baseURL: "http://127.0.0.1:8000",      
+       withCredentials: true
+    })
+    axiosInstance.post(
       "/api/login",
       {
         email: email,
@@ -106,17 +148,76 @@ function App() {
       axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
 
       setCurrentUser(true);
-    });
+    });    
+
+
+// Example: Updating CSRF token explicitly after login
+// client.post("/api/login", { email, password }).then((response) => {
+//   That ensures we read the CSRF token after the response is processed
+//   const csrfToken = Cookies.get('csrftoken');
+//   axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+//   console.log("Updated CSRF Token after login:", csrfToken);
+//   setCurrentUser(true);
+//   Additional logic here if needed
+// });
+
+//     client.post(
+//       "/api/login",
+//       {
+//         email: email,
+//         password: password
+//       }
+//     ).then(function(res) {
+// 
+//       // Retrieve the CSRF token from the cookie
+//       const csrfToken = Cookies.get('csrftoken');
+//       console.log("XXX /api/login csrfToken:" + csrfToken);    
+//       // Set the CSRF token in the Axios default headers
+//       axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+// 
+//       setCurrentUser(true);
+//     });
+
+//     client.post(
+//       "/api/login",
+//       {
+//         email: email,
+//         password: password
+//       }
+//     ).then(function(res) {
+// 
+//       // Retrieve the CSRF token from the cookie
+//       const csrfToken = Cookies.get('csrftoken');
+//       console.log("XXX /api/login csrfToken:" + csrfToken);    
+//       // Set the CSRF token in the Axios default headers
+//       axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+// 
+//       setCurrentUser(true);
+//     });    
   }
 
   function submitLogout(e) {
     e.preventDefault();
-    client.post(
+
+
+    const axiosInstance = axios.create({
+       baseURL: "http://127.0.0.1:8000",      
+       withCredentials: true
+    })
+    axiosInstance.post(
       "/api/logout",
       {withCredentials: true}
     ).then(function(res) {
       setCurrentUser(false);
-    });
+    });    
+
+
+    // client.post(
+    //   "/api/logout",
+    //   {withCredentials: true}
+    // ).then(function(res) {
+    //   setCurrentUser(false);
+    // });
   }
 
   if (currentUser) {
