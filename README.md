@@ -4,8 +4,15 @@ Authentication app using React and Django REST framework with session authentica
 
 ## Installations
 
-* docker
+
+* Django
 ```
-docker-compose build
-docker-compose up
+python manage.py runserver
+```
+
+* React
+```
+npm install
+npm run build
+npm start
 ```
