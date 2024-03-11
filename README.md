@@ -7,6 +7,8 @@ Authentication app using React and Django REST framework with session authentica
 
 * Django
 ```
+python manage.py makemigrations
+python manage.py migrate
 python manage.py runserver
 ```
 
