@@ -8,8 +8,6 @@ import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import Cookies from 'js-cookie';
 
-
-
 axios.defaults.xsrfCookieName = 'csrftoken';
 axios.defaults.xsrfHeaderName = 'X-CSRFToken';
 axios.defaults.withCredentials = true;
@@ -18,7 +16,20 @@ const client = axios.create({
   baseURL: "http://127.0.0.1:8000"
 });
 
+// client.interceptors.request.use(function (config) {
+//     // Retrieve and set the CSRF token here
+//     config.headers['X-CSRFToken'] = Cookies.get('csrftoken');
+// 
+//     const csrfToken = Cookies.get('csrftoken');
+// 
+//     console.log("XXX axios interceptors:" + csrfToken);    
+//     return config;
+// });
+
+
 function App() {
+
+
 
   const [currentUser, setCurrentUser] = useState();
   const [registrationToggle, setRegistrationToggle] = useState(false);
@@ -28,12 +39,6 @@ function App() {
 
   useEffect(() => {
 
-    // Retrieve the CSRF token from the cookie
-    const csrfToken = Cookies.get('csrftoken');
-    console.log("XXX /api/user csrfToken:" + csrfToken);    
-    // Set the CSRF token in the Axios default headers
-    axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
-
     client.get("/api/user")
     .then(function(res) {
       setCurrentUser(true);
@@ -41,6 +46,9 @@ function App() {
     .catch(function(error) {
       setCurrentUser(false);
     });
+    
+
+
   }, []);
 
   function update_form_btn() {
@@ -64,11 +72,6 @@ function App() {
       }
     ).then(function(res) {
 
-      // Retrieve the CSRF token from the cookie
-      const csrfToken = Cookies.get('csrftoken');
-      console.log("XXX /api/register csrfToken:" + csrfToken);    
-      // Set the CSRF token in the Axios default headers
-      axios.defaults.headers.common['X-CSRFToken'] = csrfToken;      
 
       client.post(
         "/api/login",
@@ -78,12 +81,6 @@ function App() {
         }
       ).then(function(res) {
 
-        // Retrieve the CSRF token from the cookie
-        const csrfToken = Cookies.get('csrftoken');
-        console.log("XXX /api/login after register csrfToken:" + csrfToken);    
-        // Set the CSRF token in the Axios default headers
-        axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
-
         setCurrentUser(true);
       });
     });
@@ -91,6 +88,7 @@ function App() {
 
   function submitLogin(e) {
     e.preventDefault();
+
     client.post(
       "/api/login",
       {
@@ -99,18 +97,25 @@ function App() {
       }
     ).then(function(res) {
 
-      // Retrieve the CSRF token from the cookie
-      const csrfToken = Cookies.get('csrftoken');
-      console.log("XXX /api/login csrfToken:" + csrfToken);    
-      // Set the CSRF token in the Axios default headers
-      axios.defaults.headers.common['X-CSRFToken'] = csrfToken;
+      setTimeout(() => {
+          const csrftoken = Cookies.get('csrftoken');
+          const sessionid = Cookies.get('sessionid');
+          console.log("XXX /api/login csrftoken:" + csrftoken);    
+          console.log("XXX /api/login sessionid:" + sessionid);  
+          
+          console.log('cookies', document.cookie)
+          
+        }, 100);      
 
-      setCurrentUser(true);
-    });
+        setCurrentUser(true);
+    });    
+
+
   }
 
   function submitLogout(e) {
     e.preventDefault();
+
     client.post(
       "/api/logout",
       {withCredentials: true}
@@ -124,7 +129,7 @@ function App() {
       <div>
         <Navbar bg="dark" variant="dark">
           <Container>
-            <Navbar.Brand>HS WIM</Navbar.Brand>
+            <Navbar.Brand>Django React</Navbar.Brand>
             <Navbar.Toggle />
             <Navbar.Collapse className="justify-content-end">
               <Navbar.Text>
@@ -145,7 +150,7 @@ function App() {
     <div>
     <Navbar bg="dark" variant="dark">
       <Container>
-        <Navbar.Brand>HS WIM</Navbar.Brand>
+        <Navbar.Brand>React Django</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Navbar.Text>

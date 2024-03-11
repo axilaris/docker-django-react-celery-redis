@@ -21,10 +21,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY')
+# SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY='django-insecure--o+^2-knvxng9b0p=hz8g6-l-y8h15%vn7)v2luv_2#$lq_xef'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG')
+# DEBUG = os.getenv('DEBUG')
+DEBUG = True
 
 
 if DEBUG:
@@ -41,7 +43,10 @@ CORS_ALLOWED_ORIGINS = [
     'http://localhost',
     'http://127.0.0.1',
     'http://0.0.0.0',
+    'http://127.0.0.1:3000',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True 
 
 CORS_ALLOW_CREDENTIALS = True
 
@@ -172,9 +177,8 @@ CELERY_RESULT_BACKEND = "redis://redis:6379"
 SESSION_COOKIE_HTTPONLY = True  # Default value is True, which is recommended
 SESSION_COOKIE_SAMESITE = 'Lax' # Consider 'None' if strictly necessary and secure is set
 SESSION_COOKIE_SECURE = False    # Non-Production Port 80
-# SESSION_COOKIE_SECURE = True    # Set to True if you are using HTTPS
 
 CSRF_COOKIE_HTTPONLY = False    # Should generally be False to allow JavaScript to read the value
 CSRF_COOKIE_SECURE = False       # Non-Production Port 80
-#CSRF_COOKIE_SECURE = True       # Set to True if you are using HTTPS
+
 
