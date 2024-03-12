@@ -105,14 +105,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     },
-    'mylocaldb': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'mylocaldb',
-        'USER': 'testuser',
-        'PASSWORD': 'testuser',
-        'HOST': 'localhost',
-        'PORT': '5432',
-    },    
+    # 'mylocaldb': {
+    #     'ENGINE': 'django.db.backends.postgresql',
+    #     'NAME': 'mylocaldb',
+    #     'USER': 'testuser',
+    #     'PASSWORD': 'testuser',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # },    
 }
 
 DATABASE_ROUTERS = ['simple.db_routers.MyLocalRouter']
