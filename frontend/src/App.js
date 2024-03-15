@@ -88,29 +88,45 @@ function App() {
 
   function submitLogin(e) {
     e.preventDefault();
-
-    client.post(
-      "/api/login",
-      {
-        email: email,
-        password: password
-      }
-    ).then(function(res) {
-
-      setTimeout(() => {
-          const csrftoken = Cookies.get('csrftoken');
-          const sessionid = Cookies.get('sessionid');
-          console.log("XXX /api/login csrftoken:" + csrftoken);    
-          console.log("XXX /api/login sessionid:" + sessionid);  
-          
-          console.log('cookies', document.cookie)
-          
-        }, 100);      
-
+  
+    const csrftoken = Cookies.get('csrftoken');
+    console.log("XXX /api/login csrftoken:" + csrftoken);  
+  
+    const url = 'http://localhost:8000/api/login'; // Corrected URL
+    const data = {
+      email: email,
+      password: password,
+    };
+  
+    fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        //'X-CSRFToken': csrftoken, // Include the CSRF token
+      },
+      body: JSON.stringify(data),
+      credentials: 'include', // Ensure cookies are sent
+    })
+      .then((response) => {
+  
+            const responsecsrftoken = Cookies.get('csrftoken');
+            const sessionid = Cookies.get('sessionid');
+            console.log("XXX /api/login responsecsrftoken:" + responsecsrftoken);    
+            console.log("XXX /api/login sessionid:" + sessionid);  
+            
+            console.log('cookies', document.cookie)
+  
+  
+        return response.json();
+      })
+      .then((res) => {
+        // Handle the response here
+        console.log('Response:', res);
         setCurrentUser(true);
-    });    
-
-
+      })
+      .catch((error) => {
+        console.error('Error fetching data:', error);
+      });
   }
 
   function submitLogout(e) {
